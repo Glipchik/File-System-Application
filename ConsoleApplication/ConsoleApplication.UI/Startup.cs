@@ -37,17 +37,13 @@ namespace ConsoleApplication.UI
 
             services.AddSingleton<ILoginHelper>(new LoginHelper(loginPasswordSection));
             services.AddSingleton<ILoginService, LoginService>();
+            services.AddSingleton<ICommandExecutor, CommandExecutor>();
             string storagePath = GetStoragePath();
             services.AddSingleton<IFileRepository, FileRepository>();
             services.AddSingleton<IFileHelper>(_ => new FileHelper(storagePath));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<ICommandHelper, CommandHelper>();
-            //services.AddSqlServer(connectionStringSection["sqlConnection"]);
-            //services.AddDbContext<ApplicationDbContext>(_ => new ApplicationDbContext(connectionString));
-            //services.AddSingleton<DbContext>(_ = new ApplicationDbContext(_ = new DbContextOptions<ApplicationDbContext>(), connectionString));
-            //services.AddSingleton(_ => new ApplicationDbContextFactory(connectionString));
-            //services.AddDbContextFactory<ApplicationDbContext>(_ => new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()));
-            services.AddDbContextFactory<ApplicationDbContext>(_ => new DbContextOptionsBuilder());
+            services.AddSingleton<ICommandRecognizer, CommandRecognizer>();
+            services.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(connectionString); });
             return services;
         }
 

@@ -10,7 +10,7 @@ namespace ConsoleApplication.UI
         {
             var startup = new Startup();
             var serviceProvider = startup.ConfigureServices().BuildServiceProvider();
-            var commandHelper = serviceProvider.GetService<ICommandHelper>();
+            var commandHelper = serviceProvider.GetService<ICommandRecognizer>();
 
             if (commandHelper is null)
             {
@@ -19,7 +19,7 @@ namespace ConsoleApplication.UI
             }
 
             string storagePath = startup.GetStoragePath();
-            commandHelper.LaunchConsoleHandler(storagePath);
+            commandHelper.LaunchCommandHandling(storagePath);
 
             startup.DisposeServiceProvider(serviceProvider);
         }
